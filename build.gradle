@@ -52,6 +52,6 @@ task jacocoTestReport(type: JacocoReport) {
 	}
 }
 
-codeCoverageReport.dependsOn {
+jacocoTestReport.dependsOn {
 	subprojects*.test
 }
