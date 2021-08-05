@@ -1,20 +1,18 @@
 package guru.springframework.repositories;
 
 import guru.springframework.bootstrap.RecipeBootstrap;
-import guru.springframework.domain.Recipe;
 import guru.springframework.domain.UnitOfMeasure;
+import guru.springframework.repositories.reactive.CategoryReactiveRepository;
+import guru.springframework.repositories.reactive.RecipeReactiveRepository;
+import guru.springframework.repositories.reactive.UnitOfMeasureReactiveRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Optional;
 
@@ -37,6 +35,15 @@ public class UnitOfMeasureRepositoryIT {
     @Autowired
     RecipeRepository recipeRepository;
 
+    @Autowired
+    UnitOfMeasureReactiveRepository reactiveRepository;
+
+    @Autowired
+    CategoryReactiveRepository categoryReactiveRepository;
+
+    @Autowired
+    RecipeReactiveRepository recipeReactiveRepository;
+
     @BeforeEach
     public void setUp() throws Exception {
         RecipeBootstrap recipeBootstrap = new RecipeBootstrap(categoryRepository, recipeRepository, unitOfMeasureRepository);
@@ -52,7 +59,6 @@ public class UnitOfMeasureRepositoryIT {
         assertEquals("Teaspoon", uomOptional.get().getDescription());
     }
 
-    @Disabled
     @Test
     public void findByDescriptionCup() throws Exception {
 
