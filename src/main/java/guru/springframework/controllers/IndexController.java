@@ -27,4 +27,9 @@ public class IndexController {
 
         return "index";
     }
+
+    @RequestMapping("/recipe")
+    public String getRecipeRedirection() {
+        return "redirect:/";
+    }
 }
