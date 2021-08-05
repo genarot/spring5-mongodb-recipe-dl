@@ -36,7 +36,7 @@ test {
 }
 
 //export test coverage
-jacocoTestReport(type: JacocoReport) {
+jacocoTestReport {
 	executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
 
 	subprojects.each {
