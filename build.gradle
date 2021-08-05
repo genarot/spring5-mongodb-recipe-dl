@@ -36,13 +36,6 @@ test {
 }
 
 //export test coverage
-jacocoTestReport {
-	reports {
-		xml.enabled true
-		html.enabled false
-	}
-}
-
 task jacocoTestReport(type: JacocoReport) {
 	executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
 
