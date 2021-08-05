@@ -42,3 +42,23 @@ jacocoTestReport {
 		html.enabled false
 	}
 }
+
+task jacocoTestReport(type: JacocoReport) {
+	executionData fileTree(project.rootDir.absolutePath).include("**/build/jacoco/*.exec")
+
+	subprojects.each {
+		sourceSets it.sourceSets.main
+	}
+
+	reports {
+		xml.enabled true
+		xml.destination file("${buildDir}/reports/jacoco/report.xml")
+		html.enabled true
+		html.destination file("${buildDir}/reports/jacoco/report.html")
+		csv.enabled false
+	}
+}
+
+codeCoverageReport.dependsOn {
+	subprojects*.test
+}
