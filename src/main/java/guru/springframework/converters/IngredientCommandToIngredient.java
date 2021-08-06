@@ -6,6 +6,7 @@ import guru.springframework.domain.Recipe;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 /**
  * Created by jt on 6/21/17.
@@ -27,7 +28,9 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
         }
 
         final Ingredient ingredient = new Ingredient();
-        ingredient.setId(source.getId());
+        if (source.getId() != null && !source.getId().isBlank()) {
+            ingredient.setId(source.getId());
+        }
 
         if(source.getRecipeId() != null){
             Recipe recipe = new Recipe();
