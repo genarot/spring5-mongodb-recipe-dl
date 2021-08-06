@@ -2,6 +2,7 @@ package guru.springframework.converters;
 
 import guru.springframework.commands.IngredientCommand;
 import guru.springframework.domain.Ingredient;
+import guru.springframework.domain.Recipe;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.lang.Nullable;
@@ -29,12 +30,16 @@ public class IngredientToIngredientCommand implements Converter<Ingredient, Ingr
 
         IngredientCommand ingredientCommand = new IngredientCommand();
         ingredientCommand.setId(ingredient.getId());
-//        if (ingredient.getRecipe() != null) {
-//            ingredientCommand.setRecipeId(ingredient.getRecipe().getId());
-//        }
         ingredientCommand.setAmount(ingredient.getAmount());
         ingredientCommand.setDescription(ingredient.getDescription());
         ingredientCommand.setUom(uomConverter.convert(ingredient.getUom()));
         return ingredientCommand;
+    }
+
+    @Synchronized
+    public IngredientCommand convert(Ingredient ingredient, Recipe recipe ) {
+        var command = this.convert(ingredient);
+        command.setRecipeId(recipe.getId());
+        return command;
     }
 }
