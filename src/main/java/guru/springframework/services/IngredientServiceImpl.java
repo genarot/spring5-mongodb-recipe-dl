@@ -38,26 +38,38 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public Mono<IngredientCommand> findByRecipeIdAndIngredientId(String recipeId, String ingredientId) {
+        var tmp = recipeRepository.findById(recipeId)
+                .flatMapIterable(recipe -> recipe.getIngredients())
+                .filter(ingredient -> ingredient.getId().equalsIgnoreCase(ingredientId))
+                .single()
+                .map(ingredient -> {
+                    IngredientCommand command = ingredientToIngredientCommand.convert(ingredient);
+                    command.setRecipeId(recipeId);
+                    return command;
+                });
 
-        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId).blockOptional();
+        System.out.println(tmp);
 
-        if (!recipeOptional.isPresent()){
-            //todo impl error handling
-            log.error("recipe id not found. Id: " + recipeId);
-        }
-
-        Recipe recipe = recipeOptional.get();
-
-        Optional<IngredientCommand> ingredientCommandOptional = recipe.getIngredients().stream()
-                .filter(ingredient -> ingredient.getId().equals(ingredientId))
-                .map( ingredient -> ingredientToIngredientCommand.convert(ingredient, recipe)).findFirst();
-
-        if(!ingredientCommandOptional.isPresent()){
-            //todo impl error handling
-            log.error("Ingredient id not found: " + ingredientId);
-        }
-
-        return Mono.just(ingredientCommandOptional.get());
+        return tmp;
+//        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId).blockOptional();
+//
+//        if (!recipeOptional.isPresent()){
+//            //todo impl error handling
+//            log.error("recipe id not found. Id: " + recipeId);
+//        }
+//
+//        Recipe recipe = recipeOptional.get();
+//
+//        Optional<IngredientCommand> ingredientCommandOptional = recipe.getIngredients().stream()
+//                .filter(ingredient -> ingredient.getId().equals(ingredientId))
+//                .map( ingredient -> ingredientToIngredientCommand.convert(ingredient, recipe)).findFirst();
+//
+//        if(!ingredientCommandOptional.isPresent()){
+//            //todo impl error handling
+//            log.error("Ingredient id not found: " + ingredientId);
+//        }
+//
+//        return Mono.just(ingredientCommandOptional.get());
     }
 
     @Override

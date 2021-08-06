@@ -120,10 +120,11 @@ public class IngredientServiceImplTest {
         recipe.addIngredient(ingredient);
 //        ingredient.setRecipe(recipe);
 
+        when(recipeRepository.save(any())).thenReturn(Mono.empty());
         when(recipeRepository.findById(anyString())).thenReturn(Mono.just(recipe));
 
         //when
-        ingredientService.deleteById("1", "3");
+        ingredientService.deleteById("1", "3").block();
 
         //then
         verify(recipeRepository, times(1)).findById(anyString());
